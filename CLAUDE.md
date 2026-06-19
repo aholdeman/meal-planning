@@ -116,15 +116,25 @@ Body:
 - Why selected: <reasoning, which constraint it satisfies>
 - [Recipe](../recipes/<status>/<slug>.md)
 
+## Lunch Batch (made Monday night, eaten Tue/Wed/Thu)
+### <Recipe Title> — <go-to|candidate>
+- Why selected: <reasoning>
+- Portions: recipe serves <N>, scaled <Nx> to cover <target portions> work lunches
+- [Recipe](../recipes/<status>/<slug>.md)
+
 ## Shopping List
-*(deduplicated; pantry staples and frozen-meal ingredients excluded)*
+*(deduplicated; pantry staples, frozen-meal ingredients, and lunch-batch
+quantities are merged in at their scaled amount, not the recipe's raw amount)*
 - [ ] item
 - [ ] item
 
 ## Outcome / Feedback
-*(fill in after meals are made, then reconcile into each recipe's own Feedback Log)*
+*(fill in after meals are made, then reconcile into each recipe's own Feedback Log;
+includes the Lunch Batch recipe alongside dinners)*
 - [ ] <Recipe Title>:
 ```
+
+The Lunch Batch section is omitted only when the user explicitly says to skip lunches for that week.
 
 ## Tag taxonomy (living list -- extend freely, but prefer reusing an existing
 value over inventing a near-duplicate; skim a few existing recipe files
@@ -148,8 +158,11 @@ spicy, slow-cooker, freezer-friendly, date-night, quick-weeknight
 ## Algorithms
 
 ### "Plan my week" (e.g. "give me 3 meals: one from the freezer, a mexican meal, and something new")
+Covers dinners (the "meals" in requests like the example above) plus the
+recurring Monday-night lunch batch -- both are planned together by default
+since the lunch batch happens every week regardless of what's asked for.
 1. `git pull` first (see Git sync) so you're working from the latest state.
-2. Parse the request into constraint clauses. Default to 3-4 meals if no
+2. Parse the request into constraint clauses. Default to 3-4 dinners if no
    count is given. Each clause resolves like:
    - "from the freezer" → pick a `kind: meal` item from `freezer.yaml`,
      preferring one whose `recipe_slug` resolves to a real recipe file (so
@@ -166,18 +179,38 @@ spicy, slow-cooker, freezer-friendly, date-night, quick-weeknight
      satisfies a hard constraint they gave.
    - a specific recipe name ("make the tikka masala again") → direct lookup
      by title/slug across all of `recipes/*/`, skip filtering.
-3. Fill any remaining unconstrained slots from `recipes/go-to/`, biasing
-   toward variety (avoid repeating the same cuisine/protein twice in one
-   week, avoid recipes with a very recent `last_made`) unless told to repeat
-   something.
-4. For each selected non-frozen meal, gather its `## Ingredients`. Merge
-   across meals, combine duplicate lines, exclude pantry staples and
-   anything already covered by a frozen meal.
-5. Write `meal-plans/YYYY-MM-DD.md` (dated today) with selections + reasoning
-   + shopping list + a blank Outcome section.
-6. Decrement `freezer.yaml` for any frozen item used (remove the entry if it
+3. Fill any remaining unconstrained dinner slots from `recipes/go-to/`,
+   biasing toward variety (avoid repeating the same cuisine/protein twice in
+   one week, avoid recipes with a very recent `last_made`) unless told to
+   repeat something.
+4. Select the Monday-night lunch batch, unless the user explicitly says to
+   skip lunches this week:
+   - Default target is 2 people × 3 workdays (Tue/Wed/Thu) = 6 portions.
+     Adjust the people-count or workday-count for that week if the request
+     says otherwise (e.g. "only need lunch for me this week," "I'm out
+     Thursday").
+   - Filter `recipes/go-to/` then `recipes/candidates/` for `meal_type`
+     including `lunch`, preferring `effort: quick` -- the whole point of a
+     batch lunch is that it's fast to cook once and easy to reheat. Apply
+     the same variety/recency bias as dinners.
+   - If no go-to/candidate recipe fits, run "Find something new" filtered
+     for a quick lunch dish (expect to need this often until the lunch
+     recipe pool builds up).
+   - Compute a scale multiplier = target portions ÷ the recipe's `servings`,
+     and scale that recipe's ingredient quantities by it -- don't use the
+     recipe's raw quantities, the batch is almost never a 1x cook.
+   - A lunch batch never comes from the freezer; it's freshly cooked every
+     Monday for that week only.
+5. For each selected dinner plus the lunch batch (at its scaled quantities),
+   gather `## Ingredients`. Merge across all of them, combine duplicate
+   lines, exclude pantry staples and anything already covered by a frozen
+   meal.
+6. Write `meal-plans/YYYY-MM-DD.md` (dated today) with selections + reasoning
+   + shopping list + a blank Outcome section (the lunch batch recipe gets
+   its own Outcome line alongside the dinners).
+7. Decrement `freezer.yaml` for any frozen item used (remove the entry if it
    hits 0); update its `last_updated`.
-7. Commit and push (see Git sync).
+8. Commit and push (see Git sync).
 
 ### "Save this recipe" (a pasted URL or pasted text/caption)
 - **URL input:** try WebFetch first.
@@ -205,7 +238,9 @@ spicy, slow-cooker, freezer-friendly, date-night, quick-weeknight
 2. Identify the target recipe: by name if the user names one, or by opening
    the most recent `meal-plans/*.md` with unfilled Outcome entries if the
    user just says "log feedback from this week."
-3. Append a dated line to that recipe's `## Feedback Log`.
+3. Append a dated line to that recipe's `## Feedback Log`. For a Lunch Batch
+   recipe, log one entry for the whole batch even though it was eaten across
+   multiple days -- it was one cook event, not three.
 4. Recompute frontmatter: `times_made += 1`, `last_made = today`, `rating` =
    mean of all Feedback Log ratings (simple average unless the user wants
    recency weighted more).
