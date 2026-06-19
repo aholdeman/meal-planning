@@ -1,0 +1,5 @@
+# Frozen meals currently on hand, ready to thaw/reheat.
+# Each item is a MEAL (not raw ingredients). quantity = portions remaining.
+# recipe_slug links to a file under recipes/<status>/<slug>.md, or null for untracked leftovers.
+items: []
+last_updated: 2026-06-19

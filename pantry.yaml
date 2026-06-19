@@ -1,0 +1,16 @@
+# Staple ingredients assumed always on hand. Excluded from shopping lists by
+# default. Matching against recipe ingredient lines is semantic/fuzzy (judged
+# at request time), not exact-string. Add/remove freely as your pantry changes.
+staples:
+  - salt
+  - pepper
+  - olive oil
+  - vegetable oil
+  - garlic
+  - onion
+  - rice
+  - pasta
+  - soy sauce
+  - flour
+  - sugar
+  - butter
