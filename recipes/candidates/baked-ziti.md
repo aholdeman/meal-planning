@@ -14,7 +14,6 @@ effort: involved
 diet: []
 kid_approved: null
 servings: 12
-freezer_friendly: true
 tags: [casserole, meal-prep-friendly]
 ---
 

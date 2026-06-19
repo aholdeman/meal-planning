@@ -14,7 +14,6 @@ effort: medium # quick (<20m active) | medium (20-45m) | involved (45m+)
 diet: [] # open list, e.g. [vegetarian, gluten-free]
 kid_approved: null # true | false | null
 servings: 4
-freezer_friendly: false # can this dish itself be frozen
 tags: [] # open catch-all, e.g. [one-pot, meal-prep-friendly]
 ---
 

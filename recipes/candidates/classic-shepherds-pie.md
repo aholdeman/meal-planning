@@ -14,7 +14,6 @@ effort: involved
 diet: []
 kid_approved: null
 servings: 6
-freezer_friendly: true
 tags: [comfort-food, casserole]
 ---
 

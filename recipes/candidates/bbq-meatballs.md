@@ -14,7 +14,6 @@ effort: medium
 diet: []
 kid_approved: null
 servings: 8
-freezer_friendly: true
 tags: [slow-cooker]
 ---
 

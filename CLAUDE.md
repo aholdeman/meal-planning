@@ -60,8 +60,12 @@ File: `recipes/<status>/<slug>.md`. Frontmatter fields:
 | diet | list | open vocabulary, e.g. vegetarian, gluten-free |
 | kid_approved | true \| false \| null | |
 | servings | int | |
-| freezer_friendly | bool | can this dish itself be frozen (recipe attribute -- distinct from whether it's *currently* in the freezer, which is `freezer.yaml`'s job) |
 | tags | list | open catch-all for anything not covered above |
+
+There is no "can this freeze" flag on a recipe. Freezer stock comes from
+separate bulk meal-prep sessions, not from saving leftovers of a regular
+dinner -- a recipe being made for dinner one week doesn't imply it'll end up
+in the freezer, so don't infer or ask about freezer-friendliness per recipe.
 
 Body sections, in order: `## Ingredients`, `## Instructions`, `## Notes`
 (freeform -- substitutions, original pasted caption text if saved from
@@ -213,11 +217,14 @@ spicy, slow-cooker, freezer-friendly, date-night, quick-weeknight
 7. Commit and push.
 
 ### "Find something new"
-- Triggered by an explicit "something new" request, or as the fallback in
-  step 2 of "Plan my week" when no existing recipe satisfies a hard
-  constraint.
+- Triggered by an explicit "something new" / "something random" request, or
+  as the fallback in step 2 of "Plan my week" when no existing recipe
+  satisfies a hard constraint.
 - WebSearch for a recipe matching the requested cuisine/protein/constraint.
   Prefer recipe sites over video platforms (searchability/scrapability).
+- **Never source a recipe from halfbakedharvest.com** -- excluded per user
+  request, even if it ranks highly in search results. Pick a different
+  result instead.
 - WebFetch the most promising 1-2 results for full ingredients/instructions.
 - Save the chosen one to `recipes/candidates/` (`source: web-search`)
   **before** presenting it, so it persists even if the user doesn't end up

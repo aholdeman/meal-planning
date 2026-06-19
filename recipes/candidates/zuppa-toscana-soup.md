@@ -14,7 +14,6 @@ effort: medium
 diet: []
 kid_approved: null
 servings: 4
-freezer_friendly: true
 tags: [soup, one-pot]
 ---
 
