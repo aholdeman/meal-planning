@@ -78,10 +78,11 @@ items:
     label: Chicken Tikka Masala (2 portions)
     kind: meal                          # meal | ingredient -- see below
     quantity: 2
-    frozen_on: 2026-06-01               # or null if unknown
     notes: ""
 last_updated: 2026-06-19
 ```
+No freeze-date tracking -- the user doesn't want to maintain that, so don't
+add a `frozen_on` field or suggest backfilling one.
 `quantity` is a portion/bag count. Using one in a meal plan decrements it by
 1; remove the entry entirely if it reaches 0.
 

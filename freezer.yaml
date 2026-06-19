@@ -8,36 +8,30 @@ items:
     label: Zuppa Toscana Soup (2 bags)
     kind: meal
     quantity: 2
-    frozen_on: null
     notes: ""
   - recipe_slug: classic-shepherds-pie
     label: Shepherd's Pie
     kind: meal
     quantity: 1
-    frozen_on: null
     notes: ""
   - recipe_slug: soy-ginger-salmon
     label: Soy Ginger Salmon
     kind: meal
     quantity: 1
-    frozen_on: null
     notes: ""
   - recipe_slug: null
     label: Salmon fillets (raw, unseasoned)
     kind: ingredient
     quantity: 1
-    frozen_on: null
     notes: "Plain frozen salmon, not yet a prepared meal. Could become soy-ginger-salmon or the miso-glazed-salmon candidate -- still needs the full recipe, just skips buying salmon."
   - recipe_slug: baked-ziti
     label: Baked Ziti
     kind: meal
     quantity: 1
-    frozen_on: null
     notes: ""
   - recipe_slug: bbq-meatballs
     label: BBQ Meatballs
     kind: meal
     quantity: 1
-    frozen_on: null
     notes: ""
 last_updated: 2026-06-19
