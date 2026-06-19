@@ -76,13 +76,23 @@ entry at the bottom):
 items:
   - recipe_slug: chicken-tikka-masala   # matches a recipe file's slug, or null for untracked leftovers
     label: Chicken Tikka Masala (2 portions)
+    kind: meal                          # meal | ingredient -- see below
     quantity: 2
-    frozen_on: 2026-06-01
+    frozen_on: 2026-06-01               # or null if unknown
     notes: ""
 last_updated: 2026-06-19
 ```
-`quantity` is a portion count. Using one portion in a meal plan decrements
-it by 1; remove the entry entirely if it reaches 0.
+`quantity` is a portion/bag count. Using one in a meal plan decrements it by
+1; remove the entry entirely if it reaches 0.
+
+`kind` distinguishes two real cases:
+- `meal` -- fully prepared, just thaw/reheat. This is a true zero-prep pick
+  for "something from the freezer."
+- `ingredient` -- a raw protein/component (e.g. plain frozen salmon
+  fillets) that still needs a full recipe. It is **not** a zero-prep
+  freezer pick -- don't select it to satisfy "one meal from the freezer."
+  Instead, when a recipe that uses it gets selected for some other reason,
+  drop that ingredient from the shopping list since it's already on hand.
 
 ## Pantry schema (`pantry.yaml`)
 A flat list under `staples:`. Matching recipe ingredients against this list
@@ -116,7 +126,8 @@ value over inventing a near-duplicate; skim a few existing recipe files
 before adding a brand new tag)
 
 **Cuisine:** mexican, italian, mediterranean, indian, chinese, japanese,
-thai, vietnamese, american, bbq, french, middle-eastern, korean, greek
+thai, vietnamese, american, bbq, french, middle-eastern, korean, greek,
+british, asian (generic, when a dish doesn't cleanly fit one country)
 
 **Protein:** chicken, beef, pork, fish, shrimp, tofu, beans, eggs, turkey, lamb
 
@@ -135,9 +146,10 @@ spicy, slow-cooker, freezer-friendly, date-night, quick-weeknight
 1. `git pull` first (see Git sync) so you're working from the latest state.
 2. Parse the request into constraint clauses. Default to 3-4 meals if no
    count is given. Each clause resolves like:
-   - "from the freezer" → pick from `freezer.yaml`, preferring an item whose
-     `recipe_slug` resolves to a real recipe file (so you can show full
-     reheating context).
+   - "from the freezer" → pick a `kind: meal` item from `freezer.yaml`,
+     preferring one whose `recipe_slug` resolves to a real recipe file (so
+     you can show full reheating context). Never pick a `kind: ingredient`
+     item to satisfy this constraint -- it still needs full cooking.
    - a cuisine/protein/diet/tag constraint (e.g. "mexican," "vegetarian") →
      filter `recipes/go-to/` first. This is the default pool -- the user
      explicitly does not want 3-4 brand new dinners invented every week, so

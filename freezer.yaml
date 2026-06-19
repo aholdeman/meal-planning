@@ -1,5 +1,43 @@
-# Frozen meals currently on hand, ready to thaw/reheat.
-# Each item is a MEAL (not raw ingredients). quantity = portions remaining.
-# recipe_slug links to a file under recipes/<status>/<slug>.md, or null for untracked leftovers.
-items: []
+# Frozen items currently on hand.
+# kind: meal       -> fully prepared, just thaw/reheat (zero-prep freezer pick)
+# kind: ingredient -> raw protein/component, still needs a full recipe;
+#                      reduces shopping list but isn't a zero-prep meal on its own
+# recipe_slug links to a file under recipes/<status>/<slug>.md, or null if untracked/not applicable.
+items:
+  - recipe_slug: zuppa-toscana-soup
+    label: Zuppa Toscana Soup (2 bags)
+    kind: meal
+    quantity: 2
+    frozen_on: null
+    notes: ""
+  - recipe_slug: classic-shepherds-pie
+    label: Shepherd's Pie
+    kind: meal
+    quantity: 1
+    frozen_on: null
+    notes: ""
+  - recipe_slug: soy-ginger-salmon
+    label: Soy Ginger Salmon
+    kind: meal
+    quantity: 1
+    frozen_on: null
+    notes: ""
+  - recipe_slug: null
+    label: Salmon fillets (raw, unseasoned)
+    kind: ingredient
+    quantity: 1
+    frozen_on: null
+    notes: "Plain frozen salmon, not yet a prepared meal. Could become soy-ginger-salmon or the miso-glazed-salmon candidate -- still needs the full recipe, just skips buying salmon."
+  - recipe_slug: baked-ziti
+    label: Baked Ziti
+    kind: meal
+    quantity: 1
+    frozen_on: null
+    notes: ""
+  - recipe_slug: bbq-meatballs
+    label: BBQ Meatballs
+    kind: meal
+    quantity: 1
+    frozen_on: null
+    notes: ""
 last_updated: 2026-06-19
